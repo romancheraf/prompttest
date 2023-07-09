@@ -5,7 +5,7 @@ var outputContainer = document.getElementById('output-container');
 generateButton.addEventListener('click', function() {
     var thoughts = userInput.value;
 
-    var apiKey = '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'; 
+    var apiKey = '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'; 
 
     var headers = {
         'Content-Type': 'application/json',
