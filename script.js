@@ -17,7 +17,7 @@ generateButton.addEventListener('click', function() {
         max_tokens: 100 
     };
 
-    fetch('https://api.openai.com/v1/engines/text-davinci-003/completions', {
+    fetch('https://api.openai.com/v1/text-davinci-003/completions', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(requestData)
