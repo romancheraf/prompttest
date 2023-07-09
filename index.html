@@ -1,19 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Your Prompt Tool</title>
+    <title>Meal Prep Tool</title>
+    <style>
+        /* Add your custom styles here */
+    </style>
 </head>
 <body>
-    <!-- Add your user interface elements here -->
-    <div class="container">
-        <textarea id="user-input" placeholder="Enter your thoughts here"></textarea>
-        <button id="generate-button">Generate Prompts</button>
-        <div id="output-container"></div>
-    </div>
-
+    <h1>Meal Prep Tool</h1>
+    <form id="meal-prep-form">
+        <label for="meal-type">Type of Meal:</label>
+        <select name="meal-type" id="meal-type">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+        </select>
+        <br>
+        <label for="target-calories">Target Calories from the Meal:</label>
+        <input type="number" name="target-calories" id="target-calories">
+        <br>
+        <label for="diet-type">Type of Diet:</label>
+        <select name="diet-type" id="diet-type">
+            <option value="keto">Keto</option>
+            <option value="paleo">Paleo</option>
+            <option value="non-dairy">Non-Dairy</option>
+            <option value="low-salt">Low Salt</option>
+            <option value="none">None</option>
+        </select>
+        <br>
+        <label for="prep-time">Time to Prep (in minutes):</label>
+        <input type="number" name="prep-time" id="prep-time">
+        <br>
+        <button id="generate-button" type="button">Generate Meal Prep Idea</button>
+    </form>
+    <div id="output-container"></div>
     <script src="script.js"></script>
 </body>
 </html>
