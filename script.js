@@ -1,50 +1,45 @@
-const API_KEY = "YOUR_OPENAI_API_KEY";
+const generateMealPrepIdea = async () => {
+  // Get user inputs
+  const mealType = document.getElementById('meal-type').value;
+  const targetCalories = document.getElementById('target-calories').value;
+  const dietType = document.getElementById('diet-type').value;
+  const prepTime = document.getElementById('prep-time').value;
 
-var generateButton = document.getElementById('generate-button');
-var mealTypeInput = document.getElementById('meal-type');
-var targetCaloriesInput = document.getElementById('target-calories');
-var dietTypeInput = document.getElementById('diet-type');
-var prepTimeInput = document.getElementById('prep-time');
-var outputContainer = document.getElementById('output-container');
+  // Generate prompt based on user inputs
+  const prompt = `I want a [${mealType}] meal. My target Calories are [${targetCalories} cal] from this meal. My type of diet is [${dietType}]. Time to prep is [${prepTime} minutes].`;
 
-generateButton.addEventListener('click', function() {
-    var mealType = mealTypeInput.value;
-    var targetCalories = targetCaloriesInput.value;
-    var dietType = dietTypeInput.value;
-    var prepTime = prepTimeInput.value;
+  // Set up OpenAI API configuration
+  const apiKey = 'YOUR_OPENAI_API_KEY';
+  const apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
 
-    var headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + API_KEY
-    };
+  // Set up request data
+  const requestData = {
+    prompt,
+    max_tokens: 100,
+  };
 
-    var prompt = "I want a [" + mealType + "] meal. My target Calories are [" + targetCalories + " cal] from this meal. My type of diet is [" + dietType + "]. Time to prep is [" + prepTime + " minutes].";
+  // Make API request to OpenAI
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify(requestData)
+  });
 
-    var requestData = {
-        model: 'text-davinci-003',
-        prompt: prompt,
-        max_tokens: 100 
-    };
+  if (response.ok) {
+    const data = await response.json();
+    const mealPrepIdea = data.choices[0].text.trim();
 
-    fetch('https://api.openai.com/v1/text-davinci-003/completions', {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(requestData)
-    })
-    .then(function(response) {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Network response was not OK');
-        }
-    })
-    .then(function(data) {
-        var mealPrepIdea = data.choices[0].text.trim();
+    // Display the generated meal prep idea
+    console.log('Generated Meal Prep Idea:');
+    console.log(mealPrepIdea);
+  } else {
+    console.error('Failed to generate meal prep idea.');
+  }
+};
 
-        outputContainer.innerHTML = '<h2>Generated Meal Prep Idea:</h2><p>' + mealPrepIdea + '</p>';
-    })
-    .catch(function(error) {
-        console.error('Error:', error);
-        outputContainer.innerHTML = 'An error occurred. Please try again.';
-    });
-});
+// Event listener for the generate button
+const generateButton = document.getElementById('generate-button');
+generateButton.addEventListener('click', generateMealPrepIdea);
