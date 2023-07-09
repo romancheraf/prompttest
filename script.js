@@ -10,7 +10,7 @@ const generateMealPrepIdea = async () => {
 
   // Set up OpenAI API configuration
   const apiKey = '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';
-  const apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+  const apiUrl = 'https://api.openai.com/v1/completions';
 
   // Set up request data
   const requestData = {
