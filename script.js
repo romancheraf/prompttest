@@ -13,8 +13,9 @@ generateButton.addEventListener('click', function() {
     };
 
     var requestData = {
+        model: 'text-davinci-003',
         prompt: thoughts,
-        max_tokens: 100 
+        max_tokens: 50 
     };
 
     fetch('https://api.openai.com/v1/completions', {
@@ -23,7 +24,11 @@ generateButton.addEventListener('click', function() {
         body: JSON.stringify(requestData)
     })
     .then(function(response) {
-        return response.json();
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Network response was not OK');
+        }
     })
     .then(function(data) {
         var generatedPrompts = data.choices.map(function(choice) {
