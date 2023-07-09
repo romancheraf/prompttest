@@ -1,45 +1,39 @@
-const generateMealPrepIdea = async () => {
-  // Get user inputs
-  const mealType = document.getElementById('meal-type').value;
-  const targetCalories = document.getElementById('target-calories').value;
-  const dietType = document.getElementById('diet-type').value;
-  const prepTime = document.getElementById('prep-time').value;
+const fetch = require('node-fetch');
+const API_KEY = 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;
 
-  // Generate prompt based on user inputs
-  const prompt = `I want a [${mealType}] meal. My target Calories are [${targetCalories} cal] from this meal. My type of diet is [${dietType}]. Time to prep is [${prepTime} minutes].`;
-
-  // Set up OpenAI API configuration
-  const apiKey = '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';
-  const apiUrl = 'https://api.openai.com/v1/completions';
-
-  // Set up request data
+async function generateMealPrepIdea(typeOfMeal, targetCalories, typeOfDiet, timeToPrep) {
   const requestData = {
-    prompt,
-    max_tokens: 100,
+    model: "gpt-3.5-turbo",
+    messages: [
+      { role: "user", content: `I want a ${typeOfMeal} meal. My target calories are ${targetCalories} cal from this meal. My type of diet is ${typeOfDiet}. Time to prep is ${timeToPrep} minutes.` }
+    ],
+    temperature: 0.7
   };
 
-  // Make API request to OpenAI
-  const response = await fetch(apiUrl, {
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
+      'Authorization': `Bearer ${API_KEY}`
     },
     body: JSON.stringify(requestData)
   });
 
-  if (response.ok) {
-    const data = await response.json();
-    const mealPrepIdea = data.choices[0].text.trim();
-
-    // Display the generated meal prep idea
-    console.log('Generated Meal Prep Idea:');
-    console.log(mealPrepIdea);
+  const data = await response.json();
+  if (data.choices && data.choices.length > 0) {
+    const generatedPrompt = data.choices[0].message.content;
+    return generatedPrompt;
   } else {
-    console.error('Failed to generate meal prep idea.');
+    throw new Error('Failed to generate meal prep idea.');
   }
-};
+}
 
-// Event listener for the generate button
-const generateButton = document.getElementById('generate-button');
-generateButton.addEventListener('click', generateMealPrepIdea);
+// Example usage
+const typeOfMeal = "lunch";
+const targetCalories = 700;
+const typeOfDiet = "none";
+const timeToPrep = 15;
+
+generateMealPrepIdea(typeOfMeal, targetCalories, typeOfDiet, timeToPrep)
+  .then(prompt => console.log(prompt))
+  .catch(error => console.error(error));
