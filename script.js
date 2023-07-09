@@ -9,7 +9,7 @@ const generateMealPrepIdea = async () => {
   const prompt = `I want a [${mealType}] meal. My target Calories are [${targetCalories} cal] from this meal. My type of diet is [${dietType}]. Time to prep is [${prepTime} minutes].`;
 
   // Set up OpenAI API configuration
-  const apiKey = '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';
+  const apiKey = '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';
   const apiUrl = 'https://api.openai.com/v1/completions';
 
   // Set up request data
